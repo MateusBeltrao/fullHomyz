@@ -15,7 +15,13 @@ export const createResidency = asyncHandler(async (req, res) => {
     userEmail,
   } = req.body.data;
 
-  console.log(req.body.data);
+  console.log("Received data:", req.body.data);
+
+  // Validar se userEmail está definido
+  if (!userEmail) {
+    return res.status(400).send({ message: "User email is required" });
+  }
+
   try {
     const residency = await prisma.residency.create({
       data: {
@@ -34,11 +40,12 @@ export const createResidency = asyncHandler(async (req, res) => {
     res.send({ message: "Residency created successfully", residency });
   } catch (err) {
     if (err.code === "P2002") {
-      throw new Error("A residency with address already there");
+      throw new Error("A residency with this address already exists");
     }
     throw new Error(err.message);
   }
 });
+
 
 export const getAllResidencies = asyncHandler(async (req, res) => {
     const residencies = await prisma.residency.findMany({
