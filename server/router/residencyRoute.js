@@ -10,3 +10,8 @@ router.get("/:id", getResidency)
 
 
 export {router as residencyRoute}
+
+
+
+
+
